@@ -40,12 +40,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-
-const findUserByName = (name) => { 
-    return users['users_list']
-        .filter( (user) => user['name'] === name); 
-}
-
 app.get('/users', (req, res) => {
     const name = req.query.name;
     if (name != undefined){
@@ -58,11 +52,6 @@ app.get('/users', (req, res) => {
     }
 });
 
-
-const findUserById = (id) =>
-    users['users_list']
-        .find( (user) => user['id'] === id);
-    
 app.get('/users/:id', (req, res) => {
     const id = req.params['id']; //or req.params.id
     let result = findUserById(id);
@@ -73,7 +62,15 @@ app.get('/users/:id', (req, res) => {
     }
 });
 
+const findUserByName = (name) => { 
+    return users['users_list']
+        .filter( (user) => user['name'] === name); 
+}
 
+const findUserById = (id) =>
+    users['users_list']
+        .find( (user) => user['id'] === id);
+  
 
 const addUser = (user) => {
     users['users_list'].push(user);
@@ -84,6 +81,23 @@ app.post('/users', (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
     res.send();
+});
+
+
+const findIndexById = (userId) => {
+    return users['users_list'].findIndex(user => user.id === userId);
+}
+app.delete('/users/:id', (req, res) => {
+    const id = req.params.id;
+    const index = findIndexById(id)
+
+    if (index !== -1) {
+        users['users_list'].splice(index, 1);
+        res.status(204).send(); // Send a "No Content" response on successful deletion
+    } else {
+        res.status(404).send('User not found'); // User with the specified ID was not found
+    }
+
 });
 
 
