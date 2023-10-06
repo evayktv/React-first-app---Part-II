@@ -100,7 +100,11 @@ const findUserById = (id) =>
   
 
 const addUser = (user) => {
-    users['users_list'].push(user);
+    user.id = randomId();
+    // Rearrange the properties of the user object to place 'id' first
+    const rearrangedUser = { id: user.id, ...user };
+
+    users['users_list'].push(rearrangedUser);
     return user;
 }
 
@@ -109,6 +113,24 @@ app.post('/users', (req, res) => {
     addUser(userToAdd);
     res.status(201).send(); // sending 201 code on success of insertion
 });
+
+
+function randomId() {
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
+    const nums = '0123456789';
+    const idLength = 3; // based on the dataset
+    let randomId = '';
+    for (let i = 0; i < idLength; i++) { // get index
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomId += characters.charAt(randomIndex);
+    }
+
+    for (let i = 0; i < idLength; i++) { // get index
+        const randomIndex = Math.floor(Math.random() * nums.length);
+        randomId += nums.charAt(randomIndex);
+    }
+    return randomId;
+}
 
 
 const findIndexById = (userId) => {
