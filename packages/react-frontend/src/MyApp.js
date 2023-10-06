@@ -17,10 +17,16 @@ function MyApp() {
 
   function updateList(person) { 
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((res) => {
+        if (res.status === 201) { // only add char of backend endpoint return 201
+          setCharacters([...characters, person]);
+        } else {
+          console.log("Failed Adding User: ", res.status);
+        }
+      })
       .catch((error) => {
         console.log(error);
-      })
+      });
   }
 
   function fetchUsers() {
