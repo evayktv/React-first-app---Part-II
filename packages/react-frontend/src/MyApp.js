@@ -18,11 +18,15 @@ function MyApp() {
   function updateList(person) { 
     postUser(person)
       .then((res) => {
-        if (res.status === 201) { // only add char of backend endpoint return 201
-          setCharacters([...characters, person]);
+        if (res.status === 201) { // Check the response status code
+          return res.json(); // Parse the response as JSON
         } else {
-          console.log("Failed Adding User: ", res.status);
+          throw new Error(`Failed Adding User: ${res.status}`);
         }
+      })
+      .then((addedUser) => {
+        // Add the added user to the state
+        setCharacters([...characters, addedUser]);
       })
       .catch((error) => {
         console.log(error);

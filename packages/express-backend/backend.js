@@ -110,9 +110,10 @@ const addUser = (user) => {
 
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.status(201).send(); // sending 201 code on success of insertion
-});
+    const addedUser = addUser(userToAdd); // Add the user and get the updated representation
+    res.status(201).json(addedUser); // Sending 201 code and the added user as a JSON response
+  });
+  
 
 
 function randomId() {
