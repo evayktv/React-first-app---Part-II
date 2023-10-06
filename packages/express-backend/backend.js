@@ -85,8 +85,8 @@ const findUserByName = (name) => {
 }
 
 const findUserByJob = (job) => {
-    return users['user_list']
-        .filter( (user) => user['job'] === job)
+    return users['users_list']
+        .filter((user) => user['job'] === job)
 }
 
 const findUserByNameAndJob = (name, job) => {
